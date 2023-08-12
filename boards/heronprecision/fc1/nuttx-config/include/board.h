@@ -1,5 +1,5 @@
 /************************************************************************************
- * nuttx-configs/px4_fmu-v6x/include/board.h
+ * //nuttx-configs/px4_fmu-v6x/include/board.h
  *
  *   Copyright (C) 2016-2019 Gregory Nutt. All rights reserved.
  *   Authors: David Sidrane <david.sidrane@nscdg.com>
@@ -32,8 +32,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  ************************************************************************************/
-#ifndef __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
-#define __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
+//#ifndef __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
+//#define __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
 
 /************************************************************************************
  * Included Files
@@ -55,26 +55,27 @@
  ************************************************************************************/
 
 /* Clocking *************************************************************************/
-/* The px4_fmu-v6X  board provides the following clock sources:
+/* The Heron Precision FC1  board provides the following clock sources:
  *
- *   X1: 16 MHz crystal for HSE
+ *   X1: 25 MHz crystal for HSE
  *
  * So we have these clock source available within the STM32
  *
  *   HSI: 16 MHz RC factory-trimmed
- *   HSE: 16 MHz crystal for HSE
+ *   HSE: 25 MHz crystal for HSE
+ *
  */
 
-#define STM32_BOARD_XTAL        16000000ul
+#define STM32_BOARD_XTAL        25000000ul
 
 #define STM32_HSI_FREQUENCY     16000000ul
 #define STM32_LSI_FREQUENCY     32000
 #define STM32_HSE_FREQUENCY     STM32_BOARD_XTAL
-#define STM32_LSE_FREQUENCY     32768
+//#define STM32_LSE_FREQUENCY     32768
 
 /* Main PLL Configuration.
  *
- * PLL source is HSE = 16,000,000
+ * PLL source is HSE = 25,000,000
  *
  * PLL_VCOx = (STM32_HSE_FREQUENCY / PLLM) * PLLN
  * Subject to:
@@ -99,8 +100,8 @@
 
 /* PLL1, wide 4 - 8 MHz input, enable DIVP, DIVQ, DIVR
  *
- *   PLL1_VCO = (16,000,000 / 1) * 60 = 960 MHz
- *
+ *   PLL1_VCO = (25,000,000 / 5) * 192 = 960 MHz
+ * (was (16 / 1) * 60)
  *   PLL1P = PLL1_VCO/2  = 960 MHz / 2   = 480 MHz
  *   PLL1Q = PLL1_VCO/4  = 960 MHz / 4   = 240 MHz
  *   PLL1R = PLL1_VCO/8  = 960 MHz / 8   = 120 MHz
@@ -111,47 +112,47 @@
 				 RCC_PLLCFGR_DIVP1EN | \
 				 RCC_PLLCFGR_DIVQ1EN | \
 				 RCC_PLLCFGR_DIVR1EN)
-#define STM32_PLLCFG_PLL1M       RCC_PLLCKSELR_DIVM1(1)
-#define STM32_PLLCFG_PLL1N       RCC_PLL1DIVR_N1(60)
+#define STM32_PLLCFG_PLL1M       RCC_PLLCKSELR_DIVM1(5)
+#define STM32_PLLCFG_PLL1N       RCC_PLL1DIVR_N1(192)
 #define STM32_PLLCFG_PLL1P       RCC_PLL1DIVR_P1(2)
 #define STM32_PLLCFG_PLL1Q       RCC_PLL1DIVR_Q1(4)
 #define STM32_PLLCFG_PLL1R       RCC_PLL1DIVR_R1(8)
 
-#define STM32_VCO1_FREQUENCY     ((STM32_HSE_FREQUENCY / 1) * 60)
+#define STM32_VCO1_FREQUENCY     ((STM32_HSE_FREQUENCY / 5) * 192)
 #define STM32_PLL1P_FREQUENCY    (STM32_VCO1_FREQUENCY / 2)
 #define STM32_PLL1Q_FREQUENCY    (STM32_VCO1_FREQUENCY / 4)
 #define STM32_PLL1R_FREQUENCY    (STM32_VCO1_FREQUENCY / 8)
 
-/* PLL2 */
+/* PLL2 Target of 192MHz */
 
 #define STM32_PLLCFG_PLL2CFG     (RCC_PLLCFGR_PLL2VCOSEL_WIDE | \
 				  RCC_PLLCFGR_PLL2RGE_4_8_MHZ | \
 				  RCC_PLLCFGR_DIVP2EN | \
 				  RCC_PLLCFGR_DIVQ2EN | \
 				  RCC_PLLCFGR_DIVR2EN)
-#define STM32_PLLCFG_PLL2M       RCC_PLLCKSELR_DIVM2(4)
-#define STM32_PLLCFG_PLL2N       RCC_PLL2DIVR_N2(48)
+#define STM32_PLLCFG_PLL2M       RCC_PLLCKSELR_DIVM2(25)
+#define STM32_PLLCFG_PLL2N       RCC_PLL2DIVR_N2(192)
 #define STM32_PLLCFG_PLL2P       RCC_PLL2DIVR_P2(2)
 #define STM32_PLLCFG_PLL2Q       RCC_PLL2DIVR_Q2(2)
 #define STM32_PLLCFG_PLL2R       RCC_PLL2DIVR_R2(2)
 
-#define STM32_VCO2_FREQUENCY     ((STM32_HSE_FREQUENCY / 4) * 48)
+#define STM32_VCO2_FREQUENCY     ((STM32_HSE_FREQUENCY / 25) * 192)
 #define STM32_PLL2P_FREQUENCY    (STM32_VCO2_FREQUENCY / 2)
 #define STM32_PLL2Q_FREQUENCY    (STM32_VCO2_FREQUENCY / 2)
 #define STM32_PLL2R_FREQUENCY    (STM32_VCO2_FREQUENCY / 2)
 
-/* PLL3 */
+/* PLL3 Target of 192MHz */
 
 #define STM32_PLLCFG_PLL3CFG    (RCC_PLLCFGR_PLL3VCOSEL_WIDE | \
 				 RCC_PLLCFGR_PLL3RGE_4_8_MHZ | \
 				 RCC_PLLCFGR_DIVQ3EN)
-#define STM32_PLLCFG_PLL3M      RCC_PLLCKSELR_DIVM3(4)
-#define STM32_PLLCFG_PLL3N      RCC_PLL3DIVR_N3(48)
+#define STM32_PLLCFG_PLL3M      RCC_PLLCKSELR_DIVM3(25)
+#define STM32_PLLCFG_PLL3N      RCC_PLL3DIVR_N3(192)
 #define STM32_PLLCFG_PLL3P      RCC_PLL3DIVR_P3(2)
 #define STM32_PLLCFG_PLL3Q      RCC_PLL3DIVR_Q3(4)
 #define STM32_PLLCFG_PLL3R      RCC_PLL3DIVR_R3(2)
 
-#define STM32_VCO3_FREQUENCY    ((STM32_HSE_FREQUENCY / 4) * 48)
+#define STM32_VCO3_FREQUENCY    ((STM32_HSE_FREQUENCY / 25) * 192)
 #define STM32_PLL3P_FREQUENCY   (STM32_VCO3_FREQUENCY / 2)
 #define STM32_PLL3Q_FREQUENCY   (STM32_VCO3_FREQUENCY / 4)
 #define STM32_PLL3R_FREQUENCY   (STM32_VCO3_FREQUENCY / 2)
@@ -321,20 +322,22 @@
 
 /* LED index values for use with board_userled() */
 
+// We have 1 LED. 
+
 #define BOARD_LED1        0
-#define BOARD_LED2        1
-#define BOARD_LED3        2
-#define BOARD_NLEDS       3
+//#define BOARD_LED2        1
+//#define BOARD_LED3        2
+#define BOARD_NLEDS       1
 
 #define BOARD_LED_RED     BOARD_LED1
-#define BOARD_LED_GREEN   BOARD_LED2
-#define BOARD_LED_BLUE    BOARD_LED3
+//#define BOARD_LED_GREEN   BOARD_LED2
+//#define BOARD_LED_BLUE    BOARD_LED3
 
 /* LED bits for use with board_userled_all() */
 
 #define BOARD_LED1_BIT    (1 << BOARD_LED1)
-#define BOARD_LED2_BIT    (1 << BOARD_LED2)
-#define BOARD_LED3_BIT    (1 << BOARD_LED3)
+//#define BOARD_LED2_BIT    (1 << BOARD_LED2)
+//#define BOARD_LED3_BIT    (1 << BOARD_LED3)
 
 /* If CONFIG_ARCH_LEDS is defined, the usage by the board port is defined in
  * include/board.h and src/stm32_leds.c. The LEDs are used to encode OS-related
