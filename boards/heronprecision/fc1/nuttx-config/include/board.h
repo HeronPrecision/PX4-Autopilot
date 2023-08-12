@@ -365,33 +365,34 @@
  */
 
 /* Alternate function pin selections ************************************************/
+/* Reference/definition is in NuttX/arch/arm/src/stm32h7/hardware/stm32h7x3xx_pinmap.h */
 
-#define GPIO_USART1_RX   GPIO_USART1_RX_3      /* PB7 */
-#define GPIO_USART1_TX   GPIO_USART1_TX_3      /* PB6 */
+#define GPIO_USART1_RX   GPIO_USART1_RX_2      /* PA10 */
+#define GPIO_USART1_TX   GPIO_USART1_TX_2      /* PA9 */
 
-#define GPIO_USART2_RX   GPIO_USART2_RX_1       /* PA3   */
+#define GPIO_USART2_RX   GPIO_USART2_RX_2       /* PD6   */
 #define GPIO_USART2_TX   GPIO_USART2_TX_2       /* PD5   */
-#define GPIO_USART2_RTS  GPIO_USART2_RTS_2      /* PD4   */
-#define GPIO_USART2_CTS  GPIO_USART2_CTS_NSS_2  /* PD3   */
+//#define GPIO_USART2_RTS  GPIO_USART2_RTS_2      /* PD4   */
+//#define GPIO_USART2_CTS  GPIO_USART2_CTS_NSS_2  /* PD3   */
 
 #define GPIO_USART3_RX   GPIO_USART3_RX_3   /* PD9   */
 #define GPIO_USART3_TX   GPIO_USART3_TX_3   /* PD8   */
 
-#define GPIO_UART4_RX    GPIO_UART4_RX_6    /* PH14 */
-#define GPIO_UART4_TX    GPIO_UART4_TX_6    /* PH13 */
+#define GPIO_UART4_RX    GPIO_UART4_RX_2    /* PA1 */
+#define GPIO_UART4_TX    GPIO_UART4_TX_2    /* PA0 */
 
-#define GPIO_UART5_RX    GPIO_UART5_RX_3    /* PD2  */
-#define GPIO_UART5_TX    GPIO_UART5_TX_3    /* PC12 */
+//#define GPIO_UART5_RX    GPIO_UART5_RX_3    /* PD2  */
+//#define GPIO_UART5_TX    GPIO_UART5_TX_3    /* PC12 */
 // GPIO_UART5_RTS   no remap                /* PC8  */
 // GPIO_UART5_CTS  No remap                 /* PC9  */
 
 #define GPIO_USART6_RX   GPIO_USART6_RX_1   /* PC7 */
 #define GPIO_USART6_TX   GPIO_USART6_TX_1   /* PC6  */
 
-#define GPIO_UART7_RX    GPIO_UART7_RX_4    /* PF6  */
+#define GPIO_UART7_RX    GPIO_UART7_RX_3    /* PE7  */
 #define GPIO_UART7_TX    GPIO_UART7_TX_3    /* PE8  */
-#define GPIO_UART7_RTS   GPIO_UART7_RTS_2   /* PF8  */
-#define GPIO_UART7_CTS   (GPIO_UART7_CTS_1 | GPIO_PULLDOWN)   /* PE10 */
+//#define GPIO_UART7_RTS   GPIO_UART7_RTS_2   /* PF8  */
+//#define GPIO_UART7_CTS   (GPIO_UART7_CTS_1 | GPIO_PULLDOWN)   /* PE10 */
 
 #define GPIO_UART8_RX    GPIO_UART8_RX_1    /* PE0 */
 #define GPIO_UART8_TX    GPIO_UART8_TX_1    /* PE1 */
