@@ -409,10 +409,8 @@
 #define GPIO_CAN2_TX     GPIO_CAN2_TX_1     /* PB13  */
 
 /* SPI
- * SPI1 is sensors1
- * SPI2 is sensors2
- * SPI3 is sensors3
- * SPI4 is Not Used
+ * SPI1 is the bmi270 IMUs (cs is implemented in spi.cpp apparently)
+ * SPI4 is pressure and magnetometer sensors
  * SPI5 is FRAM
  * SPI6 is EXTERNAL1
  *
@@ -420,25 +418,17 @@
 
 #define ADJ_SLEW_RATE(p) (((p) & ~GPIO_SPEED_MASK) | (GPIO_SPEED_2MHz))
 
-#define GPIO_SPI1_MISO   GPIO_SPI1_MISO_3               /* PG9  */
+#define GPIO_SPI1_MISO   GPIO_SPI1_MISO_2               /* PB4  */
 #define GPIO_SPI1_MOSI   GPIO_SPI1_MOSI_2               /* PB5  */
-#define GPIO_SPI1_SCK    ADJ_SLEW_RATE(GPIO_SPI1_SCK_1) /* PA5  */
+#define GPIO_SPI1_SCK    ADJ_SLEW_RATE(GPIO_SPI1_SCK_2) /* PB3  */
 
-#define GPIO_SPI2_MISO   GPIO_SPI2_MISO_3               /* PI2  */
-#define GPIO_SPI2_MOSI   GPIO_SPI2_MOSI_4               /* PI3  */
-#define GPIO_SPI2_SCK    ADJ_SLEW_RATE(GPIO_SPI2_SCK_6) /* PI1  */
-
-#define GPIO_SPI3_MISO   GPIO_SPI3_MISO_2               /* PC11 */
-#define GPIO_SPI3_MOSI   GPIO_SPI3_MOSI_3               /* PB2  */
-#define GPIO_SPI3_SCK    ADJ_SLEW_RATE(GPIO_SPI3_SCK_2) /* PC10 */
-
-#define GPIO_SPI5_MISO   GPIO_SPI5_MISO_2               /* PH7  */
-#define GPIO_SPI5_MOSI   GPIO_SPI5_MOSI_1               /* PF11 */
-#define GPIO_SPI5_SCK    ADJ_SLEW_RATE(GPIO_SPI5_SCK_1) /* PF7  */
+#define GPIO_SPI4_MISO   GPIO_SPI4_MISO_2               /* PE5  */
+#define GPIO_SPI4_MOSI   GPIO_SPI4_MOSI_2               /* PE6  */
+#define GPIO_SPI4_SCK    ADJ_SLEW_RATE(GPIO_SPI4_SCK_2) /* PE2  */
 
 #define GPIO_SPI6_MISO   GPIO_SPI6_MISO_2               /* PA6  */
-#define GPIO_SPI6_MOSI   GPIO_SPI6_MOSI_1               /* PG14 */
-#define GPIO_SPI6_SCK    ADJ_SLEW_RATE(GPIO_SPI6_SCK_3) /* PB3  */
+#define GPIO_SPI6_MOSI   GPIO_SPI6_MOSI_2               /* PA7  */
+#define GPIO_SPI6_SCK    ADJ_SLEW_RATE(GPIO_SPI6_SCK_2) /* PA5  */
 
 /* I2C
  *
@@ -454,66 +444,23 @@
 #define GPIO_I2C1_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN8)
 #define GPIO_I2C1_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN9)
 
-#define GPIO_I2C2_SCL GPIO_I2C2_SCL_2       /* PF1 */
-#define GPIO_I2C2_SDA GPIO_I2C2_SDA_2       /* PF0 */
+#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6 */
+#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7 */
 
-#define GPIO_I2C2_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTF | GPIO_PIN1)
-#define GPIO_I2C2_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTF | GPIO_PIN0)
+#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
+#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
 
-#define GPIO_I2C3_SCL GPIO_I2C3_SCL_1       /* PA8 */
-#define GPIO_I2C3_SDA GPIO_I2C3_SDA_2       /* PH8 */
-
-#define GPIO_I2C3_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTA | GPIO_PIN8)
-#define GPIO_I2C3_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTH | GPIO_PIN8)
-
-#define GPIO_I2C4_SCL GPIO_I2C4_SCL_2       /* PF14 */
-#define GPIO_I2C4_SDA GPIO_I2C4_SDA_2       /* PF15 */
-
-#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTF | GPIO_PIN14)
-#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTF | GPIO_PIN15)
-
-/* SDMMC2
+/* SDMMC1
  *
  *      VDD 3.3
  *      GND
- *      SDMMC2_CK                           PD6
- *      SDMMC2_CMD                          PD7
- *      SDMMC2_D0                           PB14
- *      SDMMC2_D1                           PB15
- *      SDMMC2_D2                           PG11
- *      SDMMC2_D3                           PB4
+ *      SDMMC1_CK                           PC12 - only one pin option, mapping here not necessary
+ *      SDMMC1_CMD                          PD2 - only one pin option, mapping here not necessary
+ *      SDMMC1_D0                           PC8 - only one pin option, mapping here not necessary
+ *      SDMMC1_D1                           PC9 - only one pin option, mapping here not necessary
+ *      SDMMC1_D2                           PC10 - only one pin option, mapping here not necessary
+ *      SDMMC1_D3                           PC11 - only one pin option, mapping here not necessary
  */
-
-#define GPIO_SDMMC2_CK   GPIO_SDMMC2_CK_1  /* PD6 */
-#define GPIO_SDMMC2_CMD  GPIO_SDMMC2_CMD_1 /* PD7 */
-//      GPIO_SDMMC2_D0   No Remap          /* PB14 */
-//      GPIO_SDMMC2_D1   No Remap          /* PB15 */
-#define GPIO_SDMMC2_D2   GPIO_SDMMC2_D2_1  /* PG11 */
-//      GPIO_SDMMC2_D3    No Remap         /* PB4 */
-
-/* The STM32 H7 connects to a TI DP83848TSQ/NOPB
- * using RMII
- *
- *   STM32 H7 BOARD        DP83848TSQ/NOPB
- *   GPIO     SIGNAL       PIN NAME
- *   -------- ------------ -------------
- *   PA7     ETH_CRS_DV    CRS_DV
- *   PC1     ETH_MDC       MDC
- *   PA2     ETH_MDIO      MDIO
- *   PA1     ETH_REF_CL    X1
- *   PC4     ETH_RXD0      RX_D0
- *   PC5     ETH_RXD1      RX_D1
- *   PB11    ETH_TX_EN     TX_EN
- *   PG13    ETH_TXD0      TX_D0
- *   PG12    ETH_TXD1      TX_D1
- *
- * The PHY address is 1, since COL/PHYAD0 features a pull up.
- */
-
-#define GPIO_ETH_RMII_TX_EN	GPIO_ETH_RMII_TX_EN_1 /* PB11 */
-#define GPIO_ETH_RMII_TXD0	GPIO_ETH_RMII_TXD0_2  /* PG13 */
-#define GPIO_ETH_RMII_TXD1	GPIO_ETH_RMII_TXD1_2  /* PG12 */
-
 
 /* USB
  *
@@ -522,41 +469,40 @@
  *      VBUS                                PA9
  */
 
-
 /* Board provides GPIO or other Hardware for signaling to timing analyzer */
 
-#if defined(CONFIG_BOARD_USE_PROBES)
-# include "stm32_gpio.h"
-# define PROBE_N(n) (1<<((n)-1))
-# define PROBE_1    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTI|GPIO_PIN0)   /* PI0 AUX1 */
-# define PROBE_2    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN12)  /* PH12 AUX2 */
-# define PROBE_3    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN11)  /* PH11 AUX3 */
-# define PROBE_4    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN10)  /* PH10 AUX4 */
-# define PROBE_5    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTD|GPIO_PIN13)  /* PD13 AUX5 */
-# define PROBE_6    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTD|GPIO_PIN14)  /* PD14 AUX6 */
-# define PROBE_7    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN6)   /* PH6  AUX7 */
-# define PROBE_8    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN9)   /* PH9  AUX8 */
-# define PROBE_9    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTE|GPIO_PIN11)  /* PE11  CAP1 */
+// #if defined(CONFIG_BOARD_USE_PROBES)
+// # include "stm32_gpio.h"
+// # define PROBE_N(n) (1<<((n)-1))
+// # define PROBE_1    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTI|GPIO_PIN0)   /* PI0 AUX1 */
+// # define PROBE_2    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN12)  /* PH12 AUX2 */
+// # define PROBE_3    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN11)  /* PH11 AUX3 */
+// # define PROBE_4    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN10)  /* PH10 AUX4 */
+// # define PROBE_5    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTD|GPIO_PIN13)  /* PD13 AUX5 */
+// # define PROBE_6    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTD|GPIO_PIN14)  /* PD14 AUX6 */
+// # define PROBE_7    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN6)   /* PH6  AUX7 */
+// # define PROBE_8    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTH|GPIO_PIN9)   /* PH9  AUX8 */
+// # define PROBE_9    (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTE|GPIO_PIN11)  /* PE11  CAP1 */
 
-# define PROBE_INIT(mask) \
-	do { \
-		if ((mask)& PROBE_N(1)) { stm32_configgpio(PROBE_1); } \
-		if ((mask)& PROBE_N(2)) { stm32_configgpio(PROBE_2); } \
-		if ((mask)& PROBE_N(3)) { stm32_configgpio(PROBE_3); } \
-		if ((mask)& PROBE_N(4)) { stm32_configgpio(PROBE_4); } \
-		if ((mask)& PROBE_N(5)) { stm32_configgpio(PROBE_5); } \
-		if ((mask)& PROBE_N(6)) { stm32_configgpio(PROBE_6); } \
-		if ((mask)& PROBE_N(7)) { stm32_configgpio(PROBE_7); } \
-		if ((mask)& PROBE_N(8)) { stm32_configgpio(PROBE_8); } \
-		if ((mask)& PROBE_N(9)) { stm32_configgpio(PROBE_9); } \
-	} while(0)
+// # define PROBE_INIT(mask) \
+// 	do { \
+// 		if ((mask)& PROBE_N(1)) { stm32_configgpio(PROBE_1); } \
+// 		if ((mask)& PROBE_N(2)) { stm32_configgpio(PROBE_2); } \
+// 		if ((mask)& PROBE_N(3)) { stm32_configgpio(PROBE_3); } \
+// 		if ((mask)& PROBE_N(4)) { stm32_configgpio(PROBE_4); } \
+// 		if ((mask)& PROBE_N(5)) { stm32_configgpio(PROBE_5); } \
+// 		if ((mask)& PROBE_N(6)) { stm32_configgpio(PROBE_6); } \
+// 		if ((mask)& PROBE_N(7)) { stm32_configgpio(PROBE_7); } \
+// 		if ((mask)& PROBE_N(8)) { stm32_configgpio(PROBE_8); } \
+// 		if ((mask)& PROBE_N(9)) { stm32_configgpio(PROBE_9); } \
+// 	} while(0)
 
-# define PROBE(n,s)  do {stm32_gpiowrite(PROBE_##n,(s));}while(0)
-# define PROBE_MARK(n) PROBE(n,false);PROBE(n,true)
-#else
+// # define PROBE(n,s)  do {stm32_gpiowrite(PROBE_##n,(s));}while(0)
+// # define PROBE_MARK(n) PROBE(n,false);PROBE(n,true)
+// #else
 # define PROBE_INIT(mask)
 # define PROBE(n,s)
 # define PROBE_MARK(n)
-#endif
+// #endif
 
-#endif  /*__NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H  */
+// #endif  /*__NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H  */
