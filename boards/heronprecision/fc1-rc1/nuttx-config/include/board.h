@@ -1,5 +1,5 @@
 /************************************************************************************
- * //nuttx-configs/px4_fmu-v6x/include/board.h
+ * Heron Precision FC1-RC1: nuttx-config/include/board.h
  *
  *   Copyright (C) 2016-2019 Gregory Nutt. All rights reserved.
  *   Authors: David Sidrane <david.sidrane@nscdg.com>
@@ -31,9 +31,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- ************************************************************************************/
-//#ifndef __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
-//#define __NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H
 
 /************************************************************************************
  * Included Files
@@ -371,9 +368,7 @@
 #define GPIO_USART1_TX   GPIO_USART1_TX_2      /* PA9 */
 
 #define GPIO_USART2_RX   GPIO_USART2_RX_2       /* PD6   */
-#define GPIO_USART2_TX   GPIO_USART2_TX_2       /* PD5   */
-//#define GPIO_USART2_RTS  GPIO_USART2_RTS_2      /* PD4   */
-//#define GPIO_USART2_CTS  GPIO_USART2_CTS_NSS_2  /* PD3   */
+#define GPIO_USART2_TX   GPIO_USART2_TX_2       /* PD5   */ 
 
 #define GPIO_USART3_RX   GPIO_USART3_RX_3   /* PD9   */
 #define GPIO_USART3_TX   GPIO_USART3_TX_3   /* PD8   */
@@ -381,18 +376,11 @@
 #define GPIO_UART4_RX    GPIO_UART4_RX_2    /* PA1 */
 #define GPIO_UART4_TX    GPIO_UART4_TX_2    /* PA0 */
 
-//#define GPIO_UART5_RX    GPIO_UART5_RX_3    /* PD2  */
-//#define GPIO_UART5_TX    GPIO_UART5_TX_3    /* PC12 */
-// GPIO_UART5_RTS   no remap                /* PC8  */
-// GPIO_UART5_CTS  No remap                 /* PC9  */
-
 #define GPIO_USART6_RX   GPIO_USART6_RX_1   /* PC7 */
 #define GPIO_USART6_TX   GPIO_USART6_TX_1   /* PC6  */
 
 #define GPIO_UART7_RX    GPIO_UART7_RX_3    /* PE7  */
 #define GPIO_UART7_TX    GPIO_UART7_TX_3    /* PE8  */
-//#define GPIO_UART7_RTS   GPIO_UART7_RTS_2   /* PF8  */
-//#define GPIO_UART7_CTS   (GPIO_UART7_CTS_1 | GPIO_PULLDOWN)   /* PE10 */
 
 #define GPIO_UART8_RX    GPIO_UART8_RX_1    /* PE0 */
 #define GPIO_UART8_TX    GPIO_UART8_TX_1    /* PE1 */
@@ -411,10 +399,7 @@
 /* SPI
  * SPI1 is the bmi270 IMUs (cs is implemented in spi.cpp apparently)
  * SPI4 is pressure and magnetometer sensors
- * SPI5 is FRAM
- * SPI6 is EXTERNAL1
- *
- */
+*/
 
 #define ADJ_SLEW_RATE(p) (((p) & ~GPIO_SPEED_MASK) | (GPIO_SPEED_2MHz))
 
@@ -444,11 +429,12 @@
 #define GPIO_I2C1_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN8)
 #define GPIO_I2C1_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN9)
 
-#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6 */
-#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7 */
+//I2C4 is the below pins, but they don't go anywhere. Commented out.
+//#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6 */
+//#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7 */
 
-#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
-#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
+//#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
+//#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
 
 /* SDMMC1
  *
@@ -466,7 +452,6 @@
  *
  *      OTG_FS_DM                           PA11
  *      OTG_FS_DP                           PA12
- *      VBUS                                PA9
  */
 
 /* Board provides GPIO or other Hardware for signaling to timing analyzer */
@@ -503,6 +488,4 @@
 # define PROBE_INIT(mask)
 # define PROBE(n,s)
 # define PROBE_MARK(n)
-// #endif
 
-// #endif  /*__NUTTX_CONFIG_PX4_FMU_V6X_INCLUDE_BOARD_H  */
