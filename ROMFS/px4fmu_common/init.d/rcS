@@ -36,6 +36,12 @@ set SDCARD_FORMAT no
 set STARTUP_TUNE 1
 set VEHICLE_TYPE none
 
+# Airframe parameter versioning
+# Value set to 1 by default but can optionally be overridden in the airframe configuration startup script.
+# Airframe maintainers can ensure a reset to the airframe defaults during an update by increasing by one.
+# e.g. add line "set PARAM_DEFAULTS_VER 2" in your airframe file to build the first update that enfoces a reset.
+set PARAM_DEFAULTS_VER 1
+
 #
 # Print full system version.
 #
@@ -93,6 +99,14 @@ then
 		fi
 	fi
 
+	# Check for an update of the ext_autostart folder, and replace the old one with it
+	if [ -e /fs/microsd/ext_autostart_new ]
+	then
+		echo "Updating external autostart files"
+		rm -r $SDCARD_EXT_PATH
+		mv /fs/microsd/ext_autostart_new $SDCARD_EXT_PATH
+	fi
+
 	set PARAM_FILE /fs/microsd/params
 	set PARAM_BACKUP_FILE "/fs/microsd/parameters_backup.bson"
 fi
@@ -106,13 +120,14 @@ then
 	. $FRC
 else
 
-	#
-	# Set the parameter file the board supports params on
-	# MTD device.
-	#
-	if mft query -q -k MTD -s MTD_PARAMETERS -v /fs/mtd_params
+	# Load param file location from kconfig
+	. ${R}etc/init.d/rc.filepaths
+
+	# Check if /fs/mtd_params is a valid BSON file
+	if ! bsondump docsize /fs/mtd_caldata
 	then
-		set PARAM_FILE /fs/mtd_params
+		echo "New /fs/mtd_caldata size is:"
+		bsondump docsize /fs/mtd_caldata
 	fi
 
 	#
@@ -162,18 +177,16 @@ else
 		param select-backup $PARAM_BACKUP_FILE
 	fi
 
-	if ver hwcmp PX4_FMU_V5X PX4_FMU_V6X ARK_FMU_V6X
+	if mft query -q -k MFT -s MFT_ETHERNET -v 1
 	then
 		netman update -i eth0
 	fi
 
-	#
-	# If the airframe has been previously reset SYS_AUTCONFIG will have been set to 1 and other params will be reset on the next boot.
-	#
+	# To trigger a parameter reset during boot SYS_AUTCONFIG was set to 1 before
 	if param greater SYS_AUTOCONFIG 0
 	then
-		# Reset params except Airframe, RC calibration, sensor calibration, flight modes, total flight time, and next flight UUID.
-		param reset_all SYS_AUTOSTART RC* CAL_* COM_FLTMODE* LND_FLIGHT* TC_* COM_FLIGHT*
+		# Reset parameters except airframe, parameter version, RC calibration, sensor calibration, flight modes, total flight time, flight UUID
+		param reset_all SYS_AUTOSTART SYS_PARAM_VER RC* CAL_* COM_FLTMODE* LND_FLIGHT* TC_* COM_FLIGHT*
 	fi
 
 	#
@@ -198,25 +211,42 @@ else
 	fi
 	unset BOARD_RC_DEFAULTS
 
-	#
-	# Set parameters and env variables for selected SYS_AUTOSTART.
-	#
-	set AUTOSTART_PATH etc/init.d/rc.autostart
+	# Load airframe configuration based on SYS_AUTOSTART parameter
 	if ! param compare SYS_AUTOSTART 0
 	then
-		if param greater SYS_AUTOSTART 1000000
+		# rc.autostart directly run the right airframe script which sets the VEHICLE_TYPE
+		# Look for airframe in ROMFS
+		. ${R}etc/init.d/rc.autostart
+
+		if [ ${VEHICLE_TYPE} == none ]
 		then
-			# Use external startup file
+			# Look for airframe on SD card
 			if [ $SDCARD_AVAILABLE = yes ]
 			then
-				set AUTOSTART_PATH etc/init.d/rc.autostart_ext
+				. ${R}etc/init.d/rc.autostart_ext
 			else
-				echo "ERROR [init] SD card not mounted - trying to load airframe from ROMFS"
+				echo "ERROR [init] SD card not mounted - can't load external airframe"
 			fi
 		fi
-		. ${R}$AUTOSTART_PATH
+
+		if [ ${VEHICLE_TYPE} == none ]
+		then
+			echo "ERROR [init] No airframe file found for SYS_AUTOSTART value"
+			param set SYS_AUTOSTART 0
+			tune_control play error
+		fi
 	fi
-	unset AUTOSTART_PATH
+
+	# Check parameter version and reset upon airframe configuration version mismatch.
+	# Reboot required because "param reset_all" would reset all "param set" lines from airframe.
+	if ! param compare SYS_PARAM_VER ${PARAM_DEFAULTS_VER}
+	then
+		echo "Switched to different parameter version. Resetting parameters."
+		param set SYS_PARAM_VER ${PARAM_DEFAULTS_VER}
+		param set SYS_AUTOCONFIG 1
+		param save
+		reboot
+	fi
 
 	#
 	# Start the tone_alarm driver.
@@ -266,12 +296,9 @@ else
 		. $FCONFIG
 	fi
 
-	#
-	# Start IO for PWM output or RC input if enabled
-	#
-	if param compare -s SYS_USE_IO 1
+	if px4io supported
 	then
-		# Check if PX4IO present and update firmware if needed.
+	# Check if PX4IO present and update firmware if needed.
 		if [ -f $IOFW ]
 		then
 			if ! px4io checkcrc ${IOFW}
@@ -293,12 +320,12 @@ else
 					tune_control stop
 				fi
 			fi
-		fi
 
-		if ! px4io start
-		then
-			echo "PX4IO start failed"
-			set STARTUP_TUNE 2 # tune 2 = ERROR_TUNE
+			if ! px4io start
+			then
+				echo "PX4IO start failed"
+				set STARTUP_TUNE 2 # tune 2 = ERROR_TUNE
+			fi
 		fi
 	fi
 
@@ -387,6 +414,23 @@ else
 	fi
 
 	#
+	# state estimator selection
+	if param compare -s EKF2_EN 1
+	then
+		ekf2 start &
+	fi
+
+	if param compare -s LPE_EN 1
+	then
+		local_position_estimator start
+	fi
+
+	if param compare -s ATT_EN 1
+	then
+		attitude_estimator_q start
+	fi
+
+	#
 	# Configure vehicle type specific parameters.
 	# Note: rc.vehicle_setup is the entry point for all vehicle type specific setup.
 	. ${R}etc/init.d/rc.vehicle_setup
@@ -417,6 +461,14 @@ else
 	# Must be started after the serial config is read
 	rc_input start $RC_INPUT_ARGS
 
+	# Manages USB interface
+	if ! cdcacm_autostart start
+	then
+		sercon
+		echo "Starting MAVLink on /dev/ttyACM0"
+		mavlink start -d /dev/ttyACM0
+	fi
+
 	#
 	# Play the startup tune (if not disabled or there is an error)
 	#
@@ -434,7 +486,12 @@ else
 	#
 	# Start a thermal calibration if required.
 	#
-	. ${R}etc/init.d/rc.thermal_cal
+	set RC_THERMAL_CAL ${R}etc/init.d/rc.thermal_cal
+	if [ -f ${RC_THERMAL_CAL} ]
+	then
+		. ${RC_THERMAL_CAL}
+	fi
+	unset RC_THERMAL_CAL
 
 	#
 	# Start gimbal to control mounts such as gimbals, disabled by default.
@@ -495,7 +552,12 @@ else
 	#
 	# Start the logger.
 	#
-	. ${R}etc/init.d/rc.logging
+	set RC_LOGGING ${R}etc/init.d/rc.logging
+	if [ -f ${RC_LOGGING} ]
+	then
+		. ${RC_LOGGING}
+	fi
+	unset RC_LOGGING
 
 	#
 	# Set additional parameters and env variables for selected AUTOSTART.
@@ -529,6 +591,10 @@ else
 			cyphal start
 		fi
 	fi
+	if param greater -s ZENOH_ENABLE 0
+	then
+		zenoh start
+	fi
 
 #
 # End of autostart.
@@ -547,6 +613,7 @@ unset LOGGER_ARGS
 unset LOGGER_BUF
 unset PARAM_FILE
 unset PARAM_BACKUP_FILE
+unset PARAM_DEFAULTS_VER
 unset RC_INPUT_ARGS
 unset SDCARD_AVAILABLE
 unset SDCARD_EXT_PATH
