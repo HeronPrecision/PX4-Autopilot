@@ -273,12 +273,27 @@ void EstimatorChecks::checkEstimatorStatus(const Context &context, Report &repor
 		}
 
 		if (!context.isArmed() && ekf_gps_check_fail) {
-			NavModes required_groups_gps = required_groups;
-			events::Log log_level = events::Log::Error;
+			NavModes required_groups_gps;
+			events::Log log_level;
 
-			if (_param_com_arm_wo_gps.get()) {
+			switch (static_cast<GnssArmingCheck>(_param_com_arm_wo_gps.get())) {
+			default:
+
+			/* FALLTHROUGH */
+			case GnssArmingCheck::DenyArming:
+				required_groups_gps = required_groups;
+				log_level = events::Log::Error;
+				break;
+
+			case GnssArmingCheck::WarningOnly:
 				required_groups_gps = NavModes::None; // optional
 				log_level = events::Log::Warning;
+				break;
+
+			case GnssArmingCheck::Disabled:
+				required_groups_gps = NavModes::None;
+				log_level = events::Log::Disabled;
+				break;
 			}
 
 			// Only report the first failure to avoid spamming
@@ -438,11 +453,20 @@ void EstimatorChecks::checkEstimatorStatus(const Context &context, Report &repor
 			}
 
 			if (message && reporter.mavlink_log_pub()) {
-				if (!_param_com_arm_wo_gps.get()) {
-					mavlink_log_critical(reporter.mavlink_log_pub(), message, " Fail");
+				switch (static_cast<GnssArmingCheck>(_param_com_arm_wo_gps.get())) {
+				default:
 
-				} else {
-					mavlink_log_critical(reporter.mavlink_log_pub(), message, "");
+				/* FALLTHROUGH */
+				case GnssArmingCheck::DenyArming:
+					mavlink_log_critical(reporter.mavlink_log_pub(), message, " Fail");
+					break;
+
+				case GnssArmingCheck::WarningOnly:
+					mavlink_log_warning(reporter.mavlink_log_pub(), message, "");
+					break;
+
+				case GnssArmingCheck::Disabled:
+					break;
 				}
 			}
 		}
@@ -727,7 +751,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
 				     _last_gpos_fail_time_us, !failsafe_flags.global_position_invalid);
 
 	// Additional warning if the system is about to enter position-loss failsafe after dead-reckoning period
-	const float eph_critical = 2.5f * _param_com_pos_fs_eph.get(); // threshold used to trigger the navigation failsafe
+	const float eph_critical = 2.5f * lpos_eph_threshold; // threshold used to trigger the navigation failsafe
 	const float gpos_critical_warning_thrld = math::max(0.9f * eph_critical, math::max(eph_critical - 10.f, 0.f));
 
 	estimator_status_flags_s estimator_status_flags;

@@ -146,6 +146,7 @@ set(msg_files
 	MountOrientation.msg
 	ModeCompleted.msg
 	NavigatorMissionItem.msg
+	NavigatorStatus.msg
 	NormalizedUnsignedSetpoint.msg
 	NpfgStatus.msg
 	ObstacleDistance.msg
@@ -181,6 +182,7 @@ set(msg_files
 	RoverAckermannGuidanceStatus.msg
 	RoverAckermannStatus.msg
 	RoverDifferentialGuidanceStatus.msg
+	RoverDifferentialSetpoint.msg
 	RoverDifferentialStatus.msg
 	Rpm.msg
 	RtlStatus.msg
