@@ -75,8 +75,8 @@
 
 //#define BOARD_HAS_LTC44XX_VALIDS      2 //  N Bricks
 #define BOARD_HAS_USB_VALID           1 // LTC Has USB valid
-#define BOARD_HAS_NBAT_V              2d // 2 Digital Voltage
-#define BOARD_HAS_NBAT_I              2d // 2 Digital Current
+#define BOARD_HAS_NBAT_V              1 //2d // 2 Digital Voltage
+#define BOARD_HAS_NBAT_I              1 //2d // 2 Digital Current
 
 /* PX4FMU GPIOs ***********************************************************************************/
 
@@ -128,9 +128,8 @@
 /* ADC defines to be used in sensors.cpp to read from a particular channel */
 
 #define ADC1_CH(n)                  (n)
-
 /* N.B. there is no offset mapping needed for ADC3 because */
-#define ADC3_CH(n)                  (n)
+//#define ADC3_CH(n)                  (n)
 
 /* We are only use ADC3 for REV/VER.
  * ADC3_6V6 and ADC3_3V3 are mapped back to ADC1
@@ -147,35 +146,42 @@
 /* Define GPIO pins used as ADC N.B. Channel numbers must match below  */
 
 #define PX4_ADC_GPIO  \
-	/* PA0  */  GPIO_ADC1_INP16,   \
-	/* PA4  */  GPIO_ADC12_INP18,  \
-	/* PB0  */  GPIO_ADC12_INP9,   \
-	/* PB1  */  GPIO_ADC12_INP5,   \
-	/* PC2  */  GPIO_ADC123_INP12, \
-	/* PC3  */  GPIO_ADC12_INP13,  \
-	/* PF12 */  GPIO_ADC1_INP6,    \
-	/* PH3  */  GPIO_ADC3_INP14,   \
-	/* PH4  */  GPIO_ADC3_INP15
+	/* PC0  */  GPIO_ADC123_INP10, \ //VBAT
+	/* PC1  */ //  GPIO_ADC123_INP11, \ //6V Out Monitor
+	/* PC2  */ //  GPIO_ADC123_INP12, \ //5V Out Monitor
+	/* PC3  */  GPIO_ADC12_INP13, \
+	/* PC4  */  GPIO_ADC12_INP4
+	/* PA0  */ // // GPIO_ADC1_INP16,   \
+	/* PA4  */ // // GPIO_ADC12_INP18,  \
+	/* PB0  */ // // GPIO_ADC12_INP9,   \
+	/* PB1  */ // // GPIO_ADC12_INP5,   \
+	/* PF12 */ // // GPIO_ADC1_INP6,    \
+	/* PH3  */ // // GPIO_ADC3_INP14,   \
+	/* PH4  */ // // GPIO_ADC3_INP15
 
 /* Define Channel numbers must match above GPIO pin IN(n)*/
-#define ADC_SCALED_VDD_3V3_SENSORS1_CHANNEL     /* PA0  */  ADC1_CH(16)
-#define ADC_SCALED_VDD_3V3_SENSORS2_CHANNEL     /* PA4  */  ADC1_CH(18)
-#define ADC_SCALED_VDD_3V3_SENSORS3_CHANNEL     /* PB0  */  ADC1_CH(9)
-#define ADC_SCALED_V5_CHANNEL                   /* PB1  */  ADC1_CH(5)
-#define ADC_ADC3_6V6_CHANNEL                    /* PC2  */  ADC3_CH(12)
-#define ADC_ADC3_3V3_CHANNEL                    /* PC3  */  ADC3_CH(13)
-#define ADC_SCALED_VDD_3V3_SENSORS4_CHANNEL     /* PF12 */  ADC1_CH(6)
-#define ADC_HW_VER_SENSE_CHANNEL                /* PH3  */  ADC3_CH(14)
-#define ADC_HW_REV_SENSE_CHANNEL                /* PH4  */  ADC3_CH(15)
 
-#define ADC_CHANNELS \
-	((1 << ADC_SCALED_VDD_3V3_SENSORS1_CHANNEL) | \
-	 (1 << ADC_SCALED_VDD_3V3_SENSORS2_CHANNEL) | \
-	 (1 << ADC_SCALED_VDD_3V3_SENSORS3_CHANNEL) | \
-	 (1 << ADC_SCALED_V5_CHANNEL)               | \
-	 (1 << ADC_ADC3_6V6_CHANNEL)                | \
-	 (1 << ADC_ADC3_3V3_CHANNEL))               | \
-	(1 << ADC_SCALED_VDD_3V3_SENSORS4_CHANNEL)
+#define ADC_BATTERY_VOLTAGE_CHANNEL        /* PC0 */  ADC1_CH(10)
+#define ADC_ESC1_CURRENT_CHANNEL 	   /* PC3 */  ADC1_CH(13)
+#define ADC_ESC2_CURRENT_CHANNEL 	   /* PC4 */  ADC1_CH(4)
+//#define ADC_SCALED_VDD_3V3_SENSORS1_CHANNEL     /* PA0  */  ADC1_CH(16)
+//#define ADC_SCALED_VDD_3V3_SENSORS2_CHANNEL     /* PA4  */  ADC1_CH(18)
+//#define ADC_SCALED_VDD_3V3_SENSORS3_CHANNEL     /* PB0  */  ADC1_CH(9)
+//#define ADC_SCALED_V5_CHANNEL                   /* PB1  */  ADC1_CH(5)
+//#define ADC_ADC3_6V6_CHANNEL                    /* PC2  */  ADC3_CH(12)
+//#define ADC_ADC3_3V3_CHANNEL                    /* PC3  */  ADC3_CH(13)
+//#define ADC_SCALED_VDD_3V3_SENSORS4_CHANNEL     /* PF12 */  ADC1_CH(6)
+//#define ADC_HW_VER_SENSE_CHANNEL                /* PH3  */  ADC3_CH(14)
+//#define ADC_HW_REV_SENSE_CHANNEL                /* PH4  */  ADC3_CH(15)
+//
+//#define ADC_CHANNELS \
+//	((1 << ADC_SCALED_VDD_3V3_SENSORS1_CHANNEL) | \
+//	 (1 << ADC_SCALED_VDD_3V3_SENSORS2_CHANNEL) | \
+//	 (1 << ADC_SCALED_VDD_3V3_SENSORS3_CHANNEL) | \
+//	 (1 << ADC_SCALED_V5_CHANNEL)               | \
+//	 (1 << ADC_ADC3_6V6_CHANNEL)                | \
+//	 (1 << ADC_ADC3_3V3_CHANNEL))               | \
+//	(1 << ADC_SCALED_VDD_3V3_SENSORS4_CHANNEL)
 
 /* HW has to large of R termination on ADC todo:change when HW value is chosen */
 
