@@ -145,19 +145,20 @@
 
 /* Define GPIO pins used as ADC N.B. Channel numbers must match below  */
 
+//PC0 PC3_C PC4
 #define PX4_ADC_GPIO  \
-	/* PC0  */  GPIO_ADC123_INP10, \ //VBAT
-	/* PC1  */ //  GPIO_ADC123_INP11, \ //6V Out Monitor
-	/* PC2  */ //  GPIO_ADC123_INP12, \ //5V Out Monitor
-	/* PC3  */  GPIO_ADC12_INP13, \
-	/* PC4  */  GPIO_ADC12_INP4
-	/* PA0  */ // // GPIO_ADC1_INP16,   \
-	/* PA4  */ // // GPIO_ADC12_INP18,  \
-	/* PB0  */ // // GPIO_ADC12_INP9,   \
-	/* PB1  */ // // GPIO_ADC12_INP5,   \
-	/* PF12 */ // // GPIO_ADC1_INP6,    \
-	/* PH3  */ // // GPIO_ADC3_INP14,   \
-	/* PH4  */ // // GPIO_ADC3_INP15
+	/* PC0 VBAT  */ GPIO_ADC123_INP10, \
+	/* PC3_C ESC1 Current */  GPIO_ADC3_INP1, \
+	/* PC4 ESC2 Current */  GPIO_ADC12_INP4
+	/* PC1 6V out monitor */  //GPIO_ADC123_INP11, \
+	/* PC2 5V out monitor */  //GPIO_ADC123_INP12, \
+	/* PA0  */ // GPIO_ADC1_INP16,   \
+	/* PA4  */ // GPIO_ADC12_INP18,  \
+	/* PB0  */ // GPIO_ADC12_INP9,   \
+	/* PB1  */ // GPIO_ADC12_INP5,   \
+	/* PF12 */ // GPIO_ADC1_INP6,    \
+	/* PH3  */ // GPIO_ADC3_INP14,   \
+	/* PH4  */ // GPIO_ADC3_INP15
 
 /* Define Channel numbers must match above GPIO pin IN(n)*/
 
