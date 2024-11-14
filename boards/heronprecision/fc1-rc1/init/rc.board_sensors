@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Heron Precision - FC1 board sensor initialization script.
+#------------------------------------------------------------------------------
+
+# Start onboard voltage monitor.
+board_adc start
+
+# Initialize other sensors here.
