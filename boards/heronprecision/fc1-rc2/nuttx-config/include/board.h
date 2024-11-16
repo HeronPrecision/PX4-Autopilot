@@ -1,5 +1,5 @@
 /************************************************************************************
- * Heron Precision FC1-RC1: nuttx-config/include/board.h
+ * Heron Precision FC1-RC2: nuttx-config/include/board.h
  *
  *   Copyright (C) 2016-2019 Gregory Nutt. All rights reserved.
  *   Authors: David Sidrane <david.sidrane@nscdg.com>
@@ -319,22 +319,22 @@
 
 /* LED index values for use with board_userled() */
 
-// We have 1 LED.
+// We have 3 LEDs.
 
 #define BOARD_LED1        0
-//#define BOARD_LED2        1
-//#define BOARD_LED3        2
-#define BOARD_NLEDS       1
+#define BOARD_LED2        1
+#define BOARD_LED3        2
+#define BOARD_NLEDS       3
 
 #define BOARD_LED_RED     BOARD_LED1
-//#define BOARD_LED_GREEN   BOARD_LED2
-//#define BOARD_LED_BLUE    BOARD_LED3
+#define BOARD_LED_GREEN   BOARD_LED2
+#define BOARD_LED_BLUE    BOARD_LED3
 
 /* LED bits for use with board_userled_all() */
 
 #define BOARD_LED1_BIT    (1 << BOARD_LED1)
-//#define BOARD_LED2_BIT    (1 << BOARD_LED2)
-//#define BOARD_LED3_BIT    (1 << BOARD_LED3)
+#define BOARD_LED2_BIT    (1 << BOARD_LED2)
+#define BOARD_LED3_BIT    (1 << BOARD_LED3)
 
 /* If CONFIG_ARCH_LEDS is defined, the usage by the board port is defined in
  * include/board.h and src/stm32_leds.c. The LEDs are used to encode OS-related
@@ -365,21 +365,21 @@
 /* Reference/definition is in NuttX/arch/arm/src/stm32h7/hardware/stm32h7x3xx_pinmap.h */
 
 #define GPIO_USART1_RX   GPIO_USART1_RX_2      /* PA10 */
-#define GPIO_USART1_TX   GPIO_USART1_TX_2      /* PA9 */
+#define GPIO_USART1_TX   GPIO_USART1_TX_1      /* PB14 */
 
-#define GPIO_USART2_RX   GPIO_USART2_RX_2       /* PD6   */
-#define GPIO_USART2_TX   GPIO_USART2_TX_2       /* PD5   */
+#define GPIO_USART2_RX   GPIO_USART2_RX_1       /* PA3   */
+#define GPIO_USART2_TX   GPIO_USART2_TX_1       /* PA2   */
 
 #define GPIO_USART3_RX   GPIO_USART3_RX_3   /* PD9   */
 #define GPIO_USART3_TX   GPIO_USART3_TX_3   /* PD8   */
 
-#define GPIO_UART4_RX    GPIO_UART4_RX_2    /* PA1 */
-#define GPIO_UART4_TX    GPIO_UART4_TX_2    /* PA0 */
+#define GPIO_UART4_RX    GPIO_UART4_RX_2    /* PB8 */
+#define GPIO_UART4_TX    GPIO_UART4_TX_3    /* PB9 */
 
 #define GPIO_USART6_RX   GPIO_USART6_RX_1   /* PC7 */
 #define GPIO_USART6_TX   GPIO_USART6_TX_1   /* PC6  */
 
-#define GPIO_UART7_RX    GPIO_UART7_RX_3    /* PE7  */
+#define GPIO_UART7_RX    GPIO_UART7_RX_1    /* PA8  */
 #define GPIO_UART7_TX    GPIO_UART7_TX_3    /* PE8  */
 
 #define GPIO_UART8_RX    GPIO_UART8_RX_1    /* PE0 */
@@ -399,6 +399,7 @@
 /* SPI
  * SPI1 is the bmi270 IMUs (cs is implemented in spi.cpp apparently)
  * SPI4 is pressure and magnetometer sensors
+ * SPI6 is the OSD
 */
 
 #define ADJ_SLEW_RATE(p) (((p) & ~GPIO_SPEED_MASK) | (GPIO_SPEED_2MHz))
@@ -423,18 +424,11 @@
  *
  */
 
-#define GPIO_I2C1_SCL GPIO_I2C1_SCL_2       /* PB8  */
-#define GPIO_I2C1_SDA GPIO_I2C1_SDA_2       /* PB9  */
+#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6  */
+#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7  */
 
-#define GPIO_I2C1_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN8)
-#define GPIO_I2C1_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN |GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN9)
-
-//I2C4 is the below pins, but they don't go anywhere. Commented out.
-//#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6 */
-//#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7 */
-
-//#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
-//#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
+#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
+#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
 
 /* SDMMC1
  *
@@ -488,4 +482,3 @@
 # define PROBE_INIT(mask)
 # define PROBE(n,s)
 # define PROBE_MARK(n)
-

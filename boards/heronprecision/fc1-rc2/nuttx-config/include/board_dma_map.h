@@ -36,17 +36,14 @@
 // DMAMUX1 Using at most 8 Channels on DMA1 --------   Assigned
 //                                                     V
 
-#define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
-#define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
+// #define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
+// #define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
 
 //#define DMAMAP_SPI2_RX    DMAMAP_DMA12_SPI2RX_0     /* 3 DMA1:39 SPI2 not used as SPI */
 //#define DMAMAP_SPI2_TX    DMAMAP_DMA12_SPI2TX_0     /* 4 DMA1:40 SPI2 not used as SPI */
 
 #define DMAMAP_USART1_RX  DMAMAP_DMA12_USART1RX_0 /*  DMA1:41  Digital FPV Cam UART 1 */
 #define DMAMAP_USART1_TX  DMAMAP_DMA12_USART1TX_0 /*  DMA1:42  Digital FPV Cam UART 1 */
-
-#define DMAMAP_USART2_RX  DMAMAP_DMA12_USART2RX_0 /*  DMA1:43 Digital FPV Cam UART 2 */
-#define DMAMAP_USART2_TX  DMAMAP_DMA12_USART2TX_0 /*  DMA1:44 Digital FPV Cam UART 2 */
 
 //#define DMAMAP_USART3_RX  DMAMAP_DMA12_USART3RX_0 /*  DMA1:45 GPS */
 //#define DMAMAP_USART3_TX  DMAMAP_DMA12_USART3TX_0 /*  DMA1:46 GPS */
@@ -74,14 +71,14 @@
 //#define DMAMAP_UART5_RX   DMAMAP_DMA12_UART5RX_1    /* 5 DMA2:65 TELEM2 */
 //#define DMAMAP_UART5_TX   DMAMAP_DMA12_UART5TX_1    /* 6 DMA2:66  TELEM2 */
 
-#define DMAMAP_UART7_RX   DMAMAP_DMA12_UART7RX_1    /* 7 DMA1:79  RX7 (1 on board) */
-#define DMAMAP_UART7_TX   DMAMAP_DMA12_UART7TX_1    /* 8 DMA1:80  TX7 (1 on board) */
+#define DMAMAP_UART7_RX   DMAMAP_DMA12_UART7RX_1    /* 5 DMA1:79  RX7 (1 on board) */
+#define DMAMAP_UART7_TX   DMAMAP_DMA12_UART7TX_1    /* 6 DMA1:80  TX7 (1 on board) */
 
-#define DMAMAP_UART8_RX   DMAMAP_DMA12_UART8RX_1  /*  DMA1:81  ESC Telemetry */
-#define DMAMAP_UART8_TX   DMAMAP_DMA12_UART8TX_1  /*  DMA1:82  For good measure/alternate use */
+#define DMAMAP_UART8_RX   DMAMAP_DMA12_UART8RX_1  /*  7 DMA1:81  ESC Telemetry */
+#define DMAMAP_UART8_TX   DMAMAP_DMA12_UART8TX_1  /*  8 DMA1:82  For good measure/alternate use */
 
 // DMAMUX2 Using at most 8 Channels on BDMA --------   Assigned
 //                                                     V
 
-#define DMAMAP_SPI6_RX    DMAMAP_BDMA_SPI6_RX       /* 1 BDMA:11 SPI J11 */
-#define DMAMAP_SPI6_TX    DMAMAP_BDMA_SPI6_TX       /* 2 BDMA:12 SPI J11 */
+// #define DMAMAP_SPI6_RX    DMAMAP_BDMA_SPI6_RX       /* 1 BDMA:11 SPI J11 */
+// #define DMAMAP_SPI6_TX    DMAMAP_BDMA_SPI6_TX       /* 2 BDMA:12 SPI J11 */
