@@ -32,9 +32,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
 
+
+
 /************************************************************************************
  * Included Files
  ************************************************************************************/
+
+
+#ifndef __NUTTX_CONFIG_HERONPRECISION_FC1_RC2_INCLUDE_BOARD_H
+#define __NUTTX_CONFIG_HERONPRECISION_FC1_RC2_INCLUDE_BOARD_H
 
 #include "board_dma_map.h"
 
@@ -424,11 +430,11 @@
  *
  */
 
-#define GPIO_I2C4_SCL GPIO_I2C4_SCL_4       /* PB6  */
-#define GPIO_I2C4_SDA GPIO_I2C4_SDA_4       /* PB7  */
+#define GPIO_I2C1_SCL GPIO_I2C4_SCL_1       /* PB6  */
+#define GPIO_I2C1_SDA GPIO_I2C4_SDA_1       /* PB7  */
 
-#define GPIO_I2C4_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
-#define GPIO_I2C4_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
+#define GPIO_I2C1_SCL_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN6)
+#define GPIO_I2C1_SDA_GPIO                  (GPIO_OUTPUT | GPIO_OPENDRAIN | GPIO_SPEED_50MHz | GPIO_OUTPUT_SET | GPIO_PORTB | GPIO_PIN7)
 
 /* SDMMC1
  *
@@ -482,3 +488,5 @@
 # define PROBE_INIT(mask)
 # define PROBE(n,s)
 # define PROBE_MARK(n)
+
+#endif

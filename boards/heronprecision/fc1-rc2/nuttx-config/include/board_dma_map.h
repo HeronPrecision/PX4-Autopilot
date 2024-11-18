@@ -36,8 +36,8 @@
 // DMAMUX1 Using at most 8 Channels on DMA1 --------   Assigned
 //                                                     V
 
-// #define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
-// #define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
+#define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
+#define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
 
 //#define DMAMAP_SPI2_RX    DMAMAP_DMA12_SPI2RX_0     /* 3 DMA1:39 SPI2 not used as SPI */
 //#define DMAMAP_SPI2_TX    DMAMAP_DMA12_SPI2TX_0     /* 4 DMA1:40 SPI2 not used as SPI */
@@ -62,8 +62,11 @@
 // DMAMUX2 Using at most 8 Channels on DMA2 --------   Assigned
 //                                                     V
 
-// #define DMAMAP_SPI4_RX    DMAMAP_DMA12_SPI4RX_1     /* 1 DMA2:61 pres & mag */
-// #define DMAMAP_SPI4_TX    DMAMAP_DMA12_SPI4TX_1     /* 2 DMA2:62 pres and mag */
+#define DMAMAP_SPI4_RX    DMAMAP_DMA12_SPI4RX_1     /* 1 DMA2:61 pres & mag */
+#define DMAMAP_SPI4_TX    DMAMAP_DMA12_SPI4TX_1     /* 2 DMA2:62 pres and mag */
+
+#define DMAMAP_USART2_RX  DMAMAP_DMA12_USART2RX_1   /* 1 DMA2 USART2 */
+#define DMAMAP_USART2_TX  DMAMAP_DMA12_USART2TX_1   /* 2 DMA2 USART2 */
 
 #define DMAMAP_USART3_RX  DMAMAP_DMA12_USART3RX_1   /* 3 DMA2:45 GPS */
 #define DMAMAP_USART3_TX  DMAMAP_DMA12_USART3TX_1   /* 4 DMA2:46 GPS */

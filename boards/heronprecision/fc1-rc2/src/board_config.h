@@ -157,11 +157,9 @@
 /* Define Channel numbers must match above GPIO pin IN(n)*/
 
 #define ADC_BATTERY_VOLTAGE_CHANNEL        /* PC0 */  ADC1_CH(10)
-#define ADC_ESC1_CURRENT_CHANNEL 	   /* PC4 */  ADC3_CH(13)
-#define ADC_ESC2_CURRENT_CHANNEL 	   /* PC5 */  ADC1_CH(4)
-//#define ADC_SCALED_VDD_3V3_SENSORS1_CHANNEL     /* PA0  */  ADC1_CH(16)
-//#define ADC_SCALED_VDD_3V3_SENSORS2_CHANNEL     /* PA4  */  ADC1_CH(18)
-//#define ADC_SCALED_VDD_3V3_SENSORS3_CHANNEL     /* PB0  */  ADC1_CH(9)
+#define ADC_BATTERY_CURRENT_CHANNEL 	   /* PC4 */  ADC1_CH(13) //just esc1 for now
+// #define ADC_ESC1_CURRENT_CHANNEL 	   /* PC4 */  ADC1_CH(13)
+// #define ADC_ESC2_CURRENT_CHANNEL 	   /* PC5 */  ADC1_CH(4)
 #define ADC_SCALED_8V4_CHANNEL                   /* PC1  */  ADC1_CH(11)
 #define ADC_SCALED_V5_CHANNEL                   /* PC2  */  ADC1_CH(12)
 //#define ADC_ADC3_6V6_CHANNEL                    /* PC2  */  ADC3_CH(12)
@@ -170,10 +168,11 @@
 //#define ADC_HW_VER_SENSE_CHANNEL                /* PH3  */  ADC3_CH(14)
 //#define ADC_HW_REV_SENSE_CHANNEL                /* PH4  */  ADC3_CH(15)
 //
+
+// needs ADC_ESC1_CURRENT_CHANNEL and ESC2
 #define ADC_CHANNELS \
 	((1 << ADC_BATTERY_VOLTAGE_CHANNEL)        | \
-	 (1 << ADC_ESC1_CURRENT_CHANNEL)           | \
-	 (1 << ADC_ESC2_CURRENT_CHANNEL)           | \
+	 (1 << ADC_BATTERY_CURRENT_CHANNEL)           | \
 	 (1 << ADC_SCALED_8V4_CHANNEL)             | \
 	 (1 << ADC_SCALED_V5_CHANNEL))
 
@@ -255,7 +254,7 @@
 
 // TX8
 #define GPIO_TONE_ALARM_IDLE          /* PE1 */ (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTE|GPIO_PIN1)
-#define GPIO_TONE_ALARM_ACTIVE               /* PE1 */ (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTE|GPIO_PIN1)
+#define GPIO_TONE_ALARM_GPIO               /* PE1 */ (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTE|GPIO_PIN1)
 
 /* USB OTG FS
  *
@@ -394,7 +393,7 @@
 		GPIO_CAN2_TX,                     \
 		GPIO_CAN2_RX,                     \
 		GPIO_TONE_ALARM_IDLE,             \
-		GPIO_TONE_ALARM_ACTIVE,             \
+		GPIO_TONE_ALARM_GPIO,			\
 		CAM_SWITCH,                       \
 		TX6_EN_SWITCH,                       \
 		CAN_MOT_EN1,                     \
