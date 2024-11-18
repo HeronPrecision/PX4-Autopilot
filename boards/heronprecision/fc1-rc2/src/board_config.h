@@ -320,6 +320,13 @@
 // #define SPEKTRUM_RX_AS_UART()          /* Can be left as uart */
 // #define SPEKTRUM_OUT(_one_true)        px4_arch_gpiowrite(GPIO_PPM_IN_AS_OUT, (_one_true))
 
+#define CAM_SWITCH                     /* PE10 High for 1, Low for 2, must be set, no hardware pull   */ (GPIO_OUTPUT|GPIO_PULLUP|GPIO_PORTE|GPIO_PIN10)
+#define TX6_EN_SWITCH                     /* PE10 High for GND, Low for TX6, must be set, no hardware pull   */ (GPIO_OUTPUT|GPIO_PULLUP|GPIO_PORTE|GPIO_PIN10)
+#define CAN_MOT_EN1                     /* PC13 PULLED UP (silent)  */ (GPIO_OUTPUT|GPIO_PULLUP|GPIO_PORTC|GPIO_PIN13)
+#define CAN_MOT_EN2                     /* PE7 PULLED UP (silent)  */ (GPIO_OUTPUT|GPIO_PULLUP|GPIO_PORTE|GPIO_PIN7)
+#define CAN_MOT_SWAP1                     /* PE13 PULLED DOWN (can) */ (GPIO_OUTPUT|GPIO_PULLDOWN|GPIO_PORTD|GPIO_PIN10)
+#define CAN_MOT_SWAP2                     /* PE13 PULLED DOWN (can) */ (GPIO_OUTPUT|GPIO_PULLDOWN|GPIO_PORTD|GPIO_PIN11)
+
 #define SDIO_SLOTNO                    0  /* Only one slot */
 #define SDIO_MINOR                     0
 
@@ -420,16 +427,22 @@
 		// GPIO_SAFETY_SWITCH_IN,            \
 		// GPIO_PG6,                         \
 		// GPIO_nARMED_INIT                  \
+		CAM_SWITCH,                       \
+		TX6_EN_SWITCH,                       \
+		CAN_MOT_EN1,                     \
+		CAN_MOT_EN2,                     \
+		CAN_MOT_SWAP1,                     \
+		CAN_MOT_SWAP2                     \
 	}
 
 #define BOARD_ENABLE_CONSOLE_BUFFER
 
 #define FLASH_BASED_PARAMS
 
-#define PX4_I2C_BUS_MTD      4,5
+// #define PX4_I2C_BUS_MTD      4,5
 
 
-#define BOARD_NUM_IO_TIMERS 4
+// #define BOARD_NUM_IO_TIMERS 4
 
 __BEGIN_DECLS
 

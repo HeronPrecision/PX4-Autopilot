@@ -75,6 +75,10 @@
 #include <px4_platform/board_determine_hw_info.h>
 #include <px4_platform/board_dma_alloc.h>
 
+# if defined(FLASH_BASED_PARAMS)
+#  include <parameters/flashparams/flashfs.h>
+#endif
+
 /****************************************************************************
  * Pre-Processor Definitions
  ****************************************************************************/
@@ -105,25 +109,26 @@ __EXPORT void board_peripheral_reset(int ms)
 {
 	/* set the peripheral rails off */
 
-	VDD_5V_PERIPH_EN(false);
-	board_control_spi_sensors_power(false, 0xffff);
-	VDD_3V3_SENSORS4_EN(false);
+	// VDD_5V_PERIPH_EN(false);
+	// board_control_spi_sensors_power(false, 0xffff);
+	// VDD_3V3_SENSORS4_EN(false);
 
-	bool last = READ_VDD_3V3_SPEKTRUM_POWER_EN();
-	/* Keep Spektum on to discharge rail*/
-	VDD_3V3_SPEKTRUM_POWER_EN(false);
+	// bool last = READ_VDD_3V3_SPEKTRUM_POWER_EN();
+	// /* Keep Spektum on to discharge rail*/
+	// VDD_3V3_SPEKTRUM_POWER_EN(false);
 
-	/* wait for the peripheral rail to reach GND */
-	usleep(ms * 1000);
-	syslog(LOG_DEBUG, "reset done, %d ms\n", ms);
+	// /* wait for the peripheral rail to reach GND */
+	// usleep(ms * 1000);
+	// syslog(LOG_DEBUG, "reset done, %d ms\n", ms);
 
-	/* re-enable power */
+	// /* re-enable power */
 
-	/* switch the peripheral rail back on */
-	VDD_3V3_SPEKTRUM_POWER_EN(last);
-	board_control_spi_sensors_power(true, 0xffff);
-	VDD_3V3_SENSORS4_EN(true);
-	VDD_5V_PERIPH_EN(true);
+	// /* switch the peripheral rail back on */
+	// VDD_3V3_SPEKTRUM_POWER_EN(last);
+	// board_control_spi_sensors_power(true, 0xffff);
+	// VDD_3V3_SENSORS4_EN(true);
+	// VDD_5V_PERIPH_EN(true);
+	UNUSED(ms);
 
 }
 
@@ -141,7 +146,7 @@ __EXPORT void board_peripheral_reset(int ms)
 __EXPORT void board_on_reset(int status)
 {
 	for (int i = 0; i < DIRECT_PWM_OUTPUT_CHANNELS; ++i) {
-		px4_arch_configgpio(io_timer_channel_get_gpio_output(i));
+		px4_arch_configgpio(PX4_MAKE_GPIO_INPUT(io_timer_channel_get_as_pwm_input(i)));
 	}
 
 	if (status >= 0) {
@@ -173,11 +178,19 @@ stm32_boardinitialize(void)
 	const uint32_t gpio[] = PX4_GPIO_INIT_LIST;
 	px4_gpio_init(gpio, arraySize(gpio));
 
-	/* configure USB interfaces */
+	/* Set switch defaults */
+	px4_arch_gpiowrite(CAM_SWITCH, 1); // CAM 1 is the default
+	px4_arch_gpiowrite(TX6_EN_SWITCH, 1); // TX6 pin is GND by default
+	px4_arch_gpiowrite(CAN_MOT_EN1, 1); // High disconnects the pins
+	px4_arch_gpiowrite(CAN_MOT_EN2, 1); // High disconnect the pins
+	px4_arch_gpiowrite(CAN_MOT_SWAP1, 0); // CAN is connected
+	px4_arch_gpiowrite(CAN_MOT_SWAP2, 0); // CAN is connected
 
+	stm32_spiinitialize();
+	/* configure USB interfaces */
 	stm32_usbinitialize();
 
-	VDD_3V3_ETH_POWER_EN(true);
+	// VDD_3V3_ETH_POWER_EN(true);
 
 }
 
@@ -210,38 +223,13 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 {
 #if !defined(BOOTLOADER)
 
-	/* Power on Interfaces */
-	VDD_3V3_SD_CARD_EN(true);
-	VDD_5V_PERIPH_EN(true);
-	VDD_5V_HIPOWER_EN(true);
-	VDD_3V3_SENSORS4_EN(true);
-	VDD_3V3_SPEKTRUM_POWER_EN(true);
-
 	/* Need hrt running before using the ADC */
 
 	px4_platform_init();
 
-	// Use the default HW_VER_REV(0x0,0x0) for Ramtron
-
-	stm32_spiinitialize();
-
 	/* Configure the HW based on the manifest */
 
 	px4_platform_configure();
-
-	if (OK == board_determine_hw_info()) {
-		syslog(LOG_INFO, "[boot] Rev 0x%1x : Ver 0x%1x %s\n", board_get_hw_revision(), board_get_hw_version(),
-		       board_get_hw_type_name());
-
-	} else {
-		syslog(LOG_ERR, "[boot] Failed to read HW revision and version\n");
-	}
-
-	/* Configure the Actual SPI interfaces (after we determined the HW version)  */
-
-	stm32_spiinitialize();
-
-	board_spi_reset(10, 0xffff);
 
 	/* Configure the DMA allocator */
 
@@ -265,11 +253,6 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 		led_on(LED_RED);
 	}
 
-	// Ensure Power is off for > 10 mS
-	usleep(15 * 1000);
-	VDD_3V3_SD_CARD_EN(true);
-	usleep(500 * 1000);
-
 #  ifdef CONFIG_MMCSD
 	int ret = stm32_sdio_initialize();
 
@@ -279,6 +262,22 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 	}
 
 #  endif /* CONFIG_MMCSD */
+
+#if defined(FLASH_BASED_PARAMS)
+	static sector_descriptor_t params_sector_map[] = {
+		{15, 128 * 1024, 0x081E0000},
+		{0, 0, 0},
+	};
+
+	/* Initialize the flashfs layer to use heap allocated memory */
+	result = parameter_flashfs_init(params_sector_map, NULL, 0);
+
+	if (result != OK) {
+		syslog(LOG_ERR, "[boot] FAILED to init params in FLASH %d\n", result);
+		led_on(LED_RED);
+	}
+
+#endif
 
 #endif /* !defined(BOOTLOADER) */
 
