@@ -386,47 +386,15 @@
 
 #define BOARD_HAS_ON_RESET 1
 
-// #if defined(TRACE_PINS)
-// #define GPIO_TRACE                          \
-// 	GPIO_TRACECLK1,                           \
-// 	GPIO_TRACED0,                             \
-// 	GPIO_TRACED1,                             \
-// 	GPIO_TRACED2,                             \
-// 	GPIO_TRACED3
-// #else
-// #define GPIO_TRACE (GPIO_OUTPUT|GPIO_OUTPUT_SET|GPIO_PORTE|GPIO_PIN2)
-// #endif
 
 #define PX4_GPIO_INIT_LIST { \
-		// GPIO_TRACE,                       \
 		PX4_ADC_GPIO,                     \
-		// GPIO_HW_VER_REV_DRIVE,            \
 		GPIO_CAN1_TX,                     \
 		GPIO_CAN1_RX,                     \
 		GPIO_CAN2_TX,                     \
 		GPIO_CAN2_RX,                     \
-		// GPIO_HEATER_OUTPUT,               \
-		// GPIO_nPOWER_IN_A,                 \
-		// GPIO_nPOWER_IN_B,                 \
-		// GPIO_nPOWER_IN_C,                 \
-		// GPIO_VDD_5V_PERIPH_nEN,           \
-		// GPIO_VDD_5V_PERIPH_nOC,           \
-		// GPIO_VDD_5V_HIPOWER_nEN,          \
-		// GPIO_VDD_5V_HIPOWER_nOC,          \
-		// GPIO_VDD_3V3_SENSORS4_EN,         \
-		// GPIO_VDD_3V3_SPEKTRUM_POWER_EN,   \
-		// GPIO_VDD_3V3_SD_CARD_EN,          \
-		// GPIO_PD15,                        \
-		// GPIO_SYNC,                        \
-		// SPI6_nRESET_EXTERNAL1,            \
-		// GPIO_ETH_POWER_EN,                \
-		// GPIO_NFC_GPIO,                    \
 		GPIO_TONE_ALARM_IDLE,             \
 		GPIO_TONE_ALARM_ACTIVE,             \
-		// GPIO_nSAFETY_SWITCH_LED_OUT_INIT, \
-		// GPIO_SAFETY_SWITCH_IN,            \
-		// GPIO_PG6,                         \
-		// GPIO_nARMED_INIT                  \
 		CAM_SWITCH,                       \
 		TX6_EN_SWITCH,                       \
 		CAN_MOT_EN1,                     \
