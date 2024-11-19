@@ -31,32 +31,45 @@
  *
  ****************************************************************************/
 
-/**
- * @file bootloader_main.c
- *
- * FMU-specific early startup code for bootloader
-*/
+ /**
+  * @file bootloader_main.c
+  *
+  * FMU-specific early startup code for bootloader
+ */
 
-#include "board_config.h"
-#include "bl.h"
+ #include "board_config.h"
+ #include "bl.h"
 
-#include <nuttx/config.h>
-#include <nuttx/board.h>
-#include <chip.h>
-#include <stm32_uart.h>
-#include <arch/board/board.h>
-#include "arm_internal.h"
-#include <px4_platform_common/init.h>
+ #include <nuttx/config.h>
+ #include <nuttx/board.h>
+ #include <chip.h>
+ #include <stm32_uart.h>
+ #include <arch/board/board.h>
+ #include "arm_internal.h"
+ #include <px4_platform_common/init.h>
 
-extern int sercon_main(int c, char **argv);
+ extern int sercon_main(int c, char **argv);
 
-void board_late_initialize(void)
-{
+ __EXPORT void board_on_reset(int status) {}
+
+ __EXPORT void stm32_boardinitialize(void)
+ {
+	/* configure USB interfaces */
+	stm32_usbinitialize();
+ }
+
+ __EXPORT int board_app_initialize(uintptr_t arg)
+ {
+	return 0;
+ }
+
+ void board_late_initialize(void)
+ {
 	sercon_main(0, NULL);
-}
+ }
 
-extern void sys_tick_handler(void);
-void board_timerhook(void)
-{
+ extern void sys_tick_handler(void);
+ void board_timerhook(void)
+ {
 	sys_tick_handler();
-}
+ }
