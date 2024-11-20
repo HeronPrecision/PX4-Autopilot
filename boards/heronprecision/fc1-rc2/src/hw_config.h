@@ -71,8 +71,11 @@
 #define INTERFACE_USART                1
 #define INTERFACE_USART_CONFIG         "/dev/ttyS0,1500000"
 #define BOOT_DELAY_ADDRESS             0x000001a0
-#define BOARD_TYPE                     420 // Placeholder
-#define BOARD_FLASH_SECTORS            (14)
+#define BOARD_TYPE                     53 // Placeholder
+// #define _FLASH_KBYTES                  (*(uint32_t *)0x1FF1E880)
+#define BOARD_FLASH_SECTORS            (16)
+// #define BOARD_FLASH_SIZE               (_FLASH_KBYTES * 1024)
+// #define BOARD_FLASH_SECTORS            (14)
 #define BOARD_FLASH_SIZE               (16 * 128 * 1024)
 #define APP_RESERVATION_SIZE           (1 * 128 * 1024)
 
@@ -84,6 +87,8 @@
 #define BOARD_LED_OFF                  1
 
 #define SERIAL_BREAK_DETECT_DISABLED   1
+
+#define USBMFGSTRING            "Heron Precision"
 
 /*
  * Uncommenting this allows to force the bootloader through
