@@ -7,3 +7,17 @@
 board_adc start
 
 # Initialize other sensors here.
+
+if bmi270 start -q -s -b 1 -c 2 -R 4 # if we start the first BMI270 successfully, then start the second one.
+then
+	bmi270 start -q -s -b 1 -c 15 -R 6
+else # if we fail to start the first BMI270, then we try the ICM42688P gyros.
+	icm42688p start -q -s -b 1 -c 2 -R 6 # if we start the ICM42688P successfully, then we can stop the BMI270.
+	icm42688p start -q -s -b 1 -c 15 -R 0
+fi
+
+# Start onboard barometer.
+bmp388 start -q -s -b 4 -c 3
+
+# Start the onboard magnetometer.
+lis3mdl start -q -s -b 4 -c 4 # -R ?
