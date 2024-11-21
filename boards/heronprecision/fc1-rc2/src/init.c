@@ -221,7 +221,7 @@ stm32_boardinitialize(void)
 
 __EXPORT int board_app_initialize(uintptr_t arg)
 {
-#if !defined(BOOTLOADER)
+// #if !defined(BOOTLOADER)
 
 	/* Need hrt running before using the ADC */
 
@@ -279,7 +279,7 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 
 #endif
 
-#endif /* !defined(BOOTLOADER) */
+// #endif /* !defined(BOOTLOADER) */
 
 	return OK;
 }

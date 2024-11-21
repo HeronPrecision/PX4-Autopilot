@@ -36,8 +36,8 @@
 // DMAMUX1 Using at most 8 Channels on DMA1 --------   Assigned
 //                                                     V
 
-#define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
-#define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
+// #define DMAMAP_SPI1_RX    DMAMAP_DMA12_SPI1RX_0     /* 1 DMA1:37 BMI270 */
+// #define DMAMAP_SPI1_TX    DMAMAP_DMA12_SPI1TX_0     /* 2 DMA1:38 BMI270 */
 
 //#define DMAMAP_SPI2_RX    DMAMAP_DMA12_SPI2RX_0     /* 3 DMA1:39 SPI2 not used as SPI */
 //#define DMAMAP_SPI2_TX    DMAMAP_DMA12_SPI2TX_0     /* 4 DMA1:40 SPI2 not used as SPI */
@@ -62,8 +62,8 @@
 // DMAMUX2 Using at most 8 Channels on DMA2 --------   Assigned
 //                                                     V
 
-#define DMAMAP_SPI4_RX    DMAMAP_DMA12_SPI4RX_1     /* 1 DMA2:61 pres & mag */
-#define DMAMAP_SPI4_TX    DMAMAP_DMA12_SPI4TX_1     /* 2 DMA2:62 pres and mag */
+// #define DMAMAP_SPI4_RX    DMAMAP_DMA12_SPI4RX_1     /* 1 DMA2:61 pres & mag */
+// #define DMAMAP_SPI4_TX    DMAMAP_DMA12_SPI4TX_1     /* 2 DMA2:62 pres and mag */
 
 #define DMAMAP_USART2_RX  DMAMAP_DMA12_USART2RX_1   /* 1 DMA2 USART2 */
 #define DMAMAP_USART2_TX  DMAMAP_DMA12_USART2TX_1   /* 2 DMA2 USART2 */
@@ -74,8 +74,8 @@
 //#define DMAMAP_UART5_RX   DMAMAP_DMA12_UART5RX_1    /* 5 DMA2:65 TELEM2 */
 //#define DMAMAP_UART5_TX   DMAMAP_DMA12_UART5TX_1    /* 6 DMA2:66  TELEM2 */
 
-#define DMAMAP_UART7_RX   DMAMAP_DMA12_UART7RX_1    /* 5 DMA1:79  RX7 (1 on board) */
-#define DMAMAP_UART7_TX   DMAMAP_DMA12_UART7TX_1    /* 6 DMA1:80  TX7 (1 on board) */
+// #define DMAMAP_UART7_RX   DMAMAP_DMA12_UART7RX_1    /* 5 DMA1:79  RX7 (1 on board) */
+// #define DMAMAP_UART7_TX   DMAMAP_DMA12_UART7TX_1    /* 6 DMA1:80  TX7 (1 on board) */
 
 #define DMAMAP_UART8_RX   DMAMAP_DMA12_UART8RX_1  /*  7 DMA1:81  ESC Telemetry */
 #define DMAMAP_UART8_TX   DMAMAP_DMA12_UART8TX_1  /*  8 DMA1:82  For good measure/alternate use */
